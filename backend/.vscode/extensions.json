@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "matangover.mypy",
+    "esbenp.prettier-vscode",
+    "bungcip.better-toml",
+    "editorconfig.editorconfig"
+  ]
+}

@@ -1,0 +1,450 @@
+#pragma version 8
+intcblock 0 1 29 65536
+bytecblock 0x 0x00
+txn NumAppArgs
+intc_0 // 0
+==
+bnz main_l10
+txna ApplicationArgs 0
+pushbytes 0x7ce12c02 // "add_proposal(string,string,uint64)void"
+==
+bnz main_l9
+txna ApplicationArgs 0
+pushbytes 0xd778ad25 // "read_proposal(string)(string,string,bool,uint64,uint64,uint64)"
+==
+bnz main_l8
+txna ApplicationArgs 0
+pushbytes 0x44d07395 // "vote_yes(string)void"
+==
+bnz main_l7
+txna ApplicationArgs 0
+pushbytes 0x0e187034 // "vote_no(string)void"
+==
+bnz main_l6
+err
+main_l6:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub votenocaster_8
+intc_1 // 1
+return
+main_l7:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub voteyescaster_7
+intc_1 // 1
+return
+main_l8:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub readproposalcaster_6
+intc_1 // 1
+return
+main_l9:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+callsub addproposalcaster_5
+intc_1 // 1
+return
+main_l10:
+txn OnCompletion
+intc_0 // NoOp
+==
+bnz main_l12
+err
+main_l12:
+txn ApplicationID
+intc_0 // 0
+==
+assert
+callsub create_0
+intc_1 // 1
+return
+
+// create
+create_0:
+proto 0 0
+pushbytes 0x6d656d626572736869705f746f6b656e // "membership_token"
+pushbytes 0x31323338363133353536 // "1238613556"
+app_global_put
+retsub
+
+// add_proposal
+addproposal_1:
+proto 3 0
+intc_0 // 0
+bytec_0 // ""
+intc_0 // 0
+dupn 3
+bytec_0 // ""
+dup
+intc_1 // 1
+!
+!
+frame_bury 0
+intc_0 // 0
+frame_bury 2
+intc_0 // 0
+frame_bury 3
+frame_dig -3
+frame_bury 7
+frame_dig 7
+frame_bury 6
+intc_2 // 29
+frame_bury 4
+frame_dig 4
+frame_dig 7
+len
++
+frame_bury 5
+frame_dig 5
+intc_3 // 65536
+<
+assert
+frame_dig 4
+itob
+extract 6 0
+frame_dig -2
+frame_bury 7
+frame_dig 6
+frame_dig 7
+concat
+frame_bury 6
+frame_dig 5
+frame_bury 4
+frame_dig 4
+itob
+extract 6 0
+concat
+bytec_1 // 0x00
+intc_0 // 0
+frame_dig 0
+setbit
+concat
+frame_dig -1
+itob
+concat
+frame_dig 2
+itob
+concat
+frame_dig 3
+itob
+concat
+frame_dig 6
+concat
+frame_bury 1
+frame_dig -3
+extract 2 0
+box_del
+pop
+frame_dig -3
+extract 2 0
+frame_dig 1
+box_put
+retsub
+
+// read_proposal
+readproposal_2:
+proto 1 1
+bytec_0 // ""
+frame_dig -1
+extract 2 0
+box_get
+store 1
+store 0
+load 1
+assert
+load 0
+frame_bury 0
+retsub
+
+// vote_yes
+voteyes_3:
+proto 1 0
+intc_0 // 0
+bytec_0 // ""
+intc_0 // 0
+dup
+bytec_0 // ""
+intc_0 // 0
+dupn 3
+bytec_0 // ""
+dup
+frame_dig -1
+extract 2 0
+box_get
+store 3
+store 2
+load 3
+assert
+load 2
+frame_bury 1
+frame_dig 1
+pushint 13 // 13
+extract_uint64
+frame_bury 0
+frame_dig 0
+intc_1 // 1
++
+frame_bury 2
+frame_dig 1
+pushint 21 // 21
+extract_uint64
+frame_bury 3
+frame_dig 1
+frame_dig 1
+pushint 2 // 2
+extract_uint16
+dig 1
+len
+substring3
+frame_bury 4
+frame_dig 1
+pushint 32 // 32
+getbit
+frame_bury 5
+frame_dig 1
+pushint 5 // 5
+extract_uint64
+frame_bury 6
+frame_dig -1
+frame_bury 10
+frame_dig 10
+frame_bury 9
+intc_2 // 29
+frame_bury 7
+frame_dig 7
+frame_dig 10
+len
++
+frame_bury 8
+frame_dig 8
+intc_3 // 65536
+<
+assert
+frame_dig 7
+itob
+extract 6 0
+frame_dig 4
+frame_bury 10
+frame_dig 9
+frame_dig 10
+concat
+frame_bury 9
+frame_dig 8
+frame_bury 7
+frame_dig 7
+itob
+extract 6 0
+concat
+bytec_1 // 0x00
+intc_0 // 0
+frame_dig 5
+setbit
+concat
+frame_dig 6
+itob
+concat
+frame_dig 2
+itob
+concat
+frame_dig 3
+itob
+concat
+frame_dig 9
+concat
+frame_bury 1
+frame_dig -1
+extract 2 0
+box_del
+pop
+frame_dig -1
+extract 2 0
+frame_dig 1
+box_put
+retsub
+
+// vote_no
+voteno_4:
+proto 1 0
+intc_0 // 0
+bytec_0 // ""
+intc_0 // 0
+dup
+bytec_0 // ""
+intc_0 // 0
+dupn 3
+bytec_0 // ""
+dup
+frame_dig -1
+extract 2 0
+box_get
+store 5
+store 4
+load 5
+assert
+load 4
+frame_bury 1
+frame_dig 1
+pushint 21 // 21
+extract_uint64
+frame_bury 0
+frame_dig 0
+intc_1 // 1
++
+frame_bury 2
+frame_dig 1
+pushint 13 // 13
+extract_uint64
+frame_bury 3
+frame_dig 1
+frame_dig 1
+pushint 2 // 2
+extract_uint16
+dig 1
+len
+substring3
+frame_bury 4
+frame_dig 1
+pushint 32 // 32
+getbit
+frame_bury 5
+frame_dig 1
+pushint 5 // 5
+extract_uint64
+frame_bury 6
+frame_dig -1
+frame_bury 10
+frame_dig 10
+frame_bury 9
+intc_2 // 29
+frame_bury 7
+frame_dig 7
+frame_dig 10
+len
++
+frame_bury 8
+frame_dig 8
+intc_3 // 65536
+<
+assert
+frame_dig 7
+itob
+extract 6 0
+frame_dig 4
+frame_bury 10
+frame_dig 9
+frame_dig 10
+concat
+frame_bury 9
+frame_dig 8
+frame_bury 7
+frame_dig 7
+itob
+extract 6 0
+concat
+bytec_1 // 0x00
+intc_0 // 0
+frame_dig 5
+setbit
+concat
+frame_dig 6
+itob
+concat
+frame_dig 3
+itob
+concat
+frame_dig 2
+itob
+concat
+frame_dig 9
+concat
+frame_bury 1
+frame_dig -1
+extract 2 0
+box_del
+pop
+frame_dig -1
+extract 2 0
+frame_dig 1
+box_put
+retsub
+
+// add_proposal_caster
+addproposalcaster_5:
+proto 0 0
+bytec_0 // ""
+dup
+intc_0 // 0
+txna ApplicationArgs 1
+frame_bury 0
+txna ApplicationArgs 2
+frame_bury 1
+txna ApplicationArgs 3
+btoi
+frame_bury 2
+frame_dig 0
+frame_dig 1
+frame_dig 2
+callsub addproposal_1
+retsub
+
+// read_proposal_caster
+readproposalcaster_6:
+proto 0 0
+bytec_0 // ""
+dup
+txna ApplicationArgs 1
+frame_bury 1
+frame_dig 1
+callsub readproposal_2
+frame_bury 0
+pushbytes 0x151f7c75 // 0x151f7c75
+frame_dig 0
+concat
+log
+retsub
+
+// vote_yes_caster
+voteyescaster_7:
+proto 0 0
+bytec_0 // ""
+txna ApplicationArgs 1
+frame_bury 0
+frame_dig 0
+callsub voteyes_3
+retsub
+
+// vote_no_caster
+votenocaster_8:
+proto 0 0
+bytec_0 // ""
+txna ApplicationArgs 1
+frame_bury 0
+frame_dig 0
+callsub voteno_4
+retsub

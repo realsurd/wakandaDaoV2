@@ -1,0 +1,62 @@
+{
+    "name": "proposals",
+    "methods": [
+        {
+            "name": "add_proposal",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "name"
+                },
+                {
+                    "type": "string",
+                    "name": "description"
+                },
+                {
+                    "type": "uint64",
+                    "name": "end_time"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "read_proposal",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "name"
+                }
+            ],
+            "returns": {
+                "type": "(string,string,bool,uint64,uint64,uint64)"
+            }
+        },
+        {
+            "name": "vote_yes",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "proposal_name"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "vote_no",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "proposal_name"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        }
+    ],
+    "networks": {}
+}
